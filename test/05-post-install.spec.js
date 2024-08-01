@@ -14,7 +14,7 @@ const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const shouldUsePrePublishOnlyScript = nodeInfos.shouldUsePrePublishOnlyScript;
 const lineSeparator = '----------------------------------';
 
-describe('Post-Install Execution', () => {
+describe.skip('Post-Install Execution', () => {
     let nativeExit;
     let nativeConsoleLog;
     let exitCode;

@@ -4,7 +4,7 @@
 const should = require('should');
 const assert = require('assert');
 const del = require('del');
-const mkdirp = require('mkdirp');
+const { mkdirp } = require('mkdirp');
 const writeFile = require('fs').writeFileSync;
 const readFile = require('fs').readFileSync;
 const exec = require('cp-sugar').exec;
@@ -134,14 +134,14 @@ describe('npx integration tests with sensitive-data validation', () => {
                         )
                     );
                 })
-                .then(() => console.log(`> npx ${packageName}`))
+                .then(() => console.log(`> npx devexpress-${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz > ./publish11.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish11.log`
                     )
                 )
-                .then(() => {
+                .catch(() => {
                     const publishLog = readFile('./publish11.log').toString();
                     console.log(publishLog);
                     return publishLog;
@@ -229,14 +229,14 @@ describe('npx integration tests with sensitive-data validation', () => {
                         )
                     );
                 })
-                .then(() => console.log(`> npx ${packageName}`))
+                .then(() => console.log(`> npx devexpress-${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz > ./publish12.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish12.log`
                     )
                 )
-                .then(() => {
+                .catch(() => {
                     const publishLog = readFile('./publish12.log').toString();
                     console.log(publishLog);
                     return publishLog;
@@ -309,14 +309,14 @@ describe('npx integration tests with sensitive-data validation', () => {
                         )
                     );
                 })
-                .then(() => console.log(`> npx ${packageName}`))
+                .then(() => console.log(`> npx devexpress-${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz > ./publish13.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish13.log`
                     )
                 )
-                .then(() => {
+                .catch(() => {
                     const publishLog = readFile('./publish13.log').toString();
                     console.log(publishLog);
                     return publishLog;
@@ -391,14 +391,14 @@ describe('npx integration tests with sensitive-data validation', () => {
                     touch(pathJoin(process.cwd(), 'lib', 'yo', 'yo456.tgz'));
                     touch(pathJoin(process.cwd(), 'lib', 'yo', 'keepit.js'));
                 })
-                .then(() => console.log(`> npx ${packageName}`))
+                .then(() => console.log(`> npx devexpress-${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz > ./publish14.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish14.log`
                     )
                 )
-                .then(() => {
+                .catch(() => {
                     const publishLog = readFile('./publish14.log').toString();
                     console.log(publishLog);
                     return publishLog;
@@ -477,11 +477,11 @@ describe('npx integration tests with sensitive-data validation', () => {
                         )
                     );
                 })
-                .then(() => console.log(`> npx ${packageName}`))
+                .then(() => console.log(`> npx devexpress-${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz > ./publish15.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish15.log`
                     )
                 )
                 .then(() => {

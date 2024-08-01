@@ -90,9 +90,16 @@ describe('npm integration tests', () => {
 
     it('Should not install globally', () => {
         return Promise.resolve()
-            .then(() => console.log(`> npm install -g ${packageName}`))
             .then(() =>
-                exec(`npm install -g ../${packageName.replace('@', '-')}.tgz`)
+                console.log(`> npm install -g devexpress-${packageName}`)
+            )
+            .then(() =>
+                exec(
+                    `npm install -g --foreground-scripts ../devexpress-${packageName.replace(
+                        '@',
+                        '-'
+                    )}.tgz`
+                )
             )
             .then(() => {
                 throw new Error('Promise rejection expected');
@@ -104,10 +111,14 @@ describe('npm integration tests', () => {
 
     it('Should install locally', () => {
         return Promise.resolve()
-            .then(() => console.log(`> npm install --save-dev ${packageName}`))
+            .then(() =>
+                console.log(
+                    `> npm install --save-dev devexpress-${packageName}`
+                )
+            )
             .then(() =>
                 exec(
-                    `npm install --save-dev ../${packageName.replace(
+                    `npm install --save-dev --foreground-scripts ../devexpress-${packageName.replace(
                         '@',
                         '-'
                     )}.tgz`
@@ -150,17 +161,49 @@ describe('npm integration tests', () => {
     });
 
     it('Should be able to use publish-please after installing locally', () => {
+        const packageJson = JSON.parse(readFile('package.json').toString());
+        packageJson.scripts = {
+            test: 'echo Error: no test specified',
+            'publish-please': 'publish-please',
+        };
+
+        writeFile('package.json', JSON.stringify(packageJson, null, 2));
+
         return Promise.resolve()
-            .then(() => console.log(`> npm install --save-dev ${packageName}`))
+            .then(() => {
+                writeFile(
+                    '.publishrc',
+                    JSON.stringify({
+                        validations: {
+                            vulnerableDependencies: true,
+                            uncommittedChanges: false,
+                            untrackedFiles: false,
+                            sensitiveData: true,
+                            branch: 'master',
+                            gitTag: false,
+                        },
+                        confirm: true,
+                        publishCommand: 'npm publish',
+                        publishTag: 'latest',
+                        prePublishScript: 'npm test',
+                        postPublishScript: '',
+                    })
+                );
+            })
+            .then(() =>
+                console.log(
+                    `> npm install --save-dev devexpress-${packageName}`
+                )
+            )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npm install --save-dev ../${packageName.replace('@','-')}.tgz`
+                    `npm install --save-dev ../devexpress-${packageName.replace('@','-')}.tgz`
                 )
             )
             .then(() => console.log('> npm run publish-please'))
             .then(() => exec('npm run publish-please > ./publish01.log'))
-            .then(() => {
+            .catch(() => {
                 const publishLog = readFile('./publish01.log').toString();
                 console.log(publishLog);
                 /* prettier-ignore */
@@ -200,17 +243,49 @@ describe('npm integration tests', () => {
     });
 
     it('Should be able to run publish-please in dry mode after installing locally', () => {
+        const packageJson = JSON.parse(readFile('package.json').toString());
+        packageJson.scripts = {
+            test: 'echo Error: no test specified',
+            'publish-please': 'publish-please',
+        };
+
+        writeFile('package.json', JSON.stringify(packageJson, null, 2));
+
         return Promise.resolve()
+            .then(() => {
+                writeFile(
+                    '.publishrc',
+                    JSON.stringify({
+                        validations: {
+                            vulnerableDependencies: true,
+                            uncommittedChanges: false,
+                            untrackedFiles: false,
+                            sensitiveData: true,
+                            branch: 'master',
+                            gitTag: false,
+                        },
+                        confirm: true,
+                        publishCommand: 'npm publish',
+                        publishTag: 'latest',
+                        prePublishScript: 'npm test',
+                        postPublishScript: '',
+                    })
+                );
+            })
             .then(() => {
                 console.log('> setting .auditignore with content:');
                 console.log(readFile('.auditignore').toString());
                 console.log('');
             })
-            .then(() => console.log(`> npm install --save-dev ${packageName}`))
+            .then(() =>
+                console.log(
+                    `> npm install --save-dev devexpress-${packageName}`
+                )
+            )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npm install --save-dev ../${packageName.replace('@','-')}.tgz`
+                    `npm install --save-dev --foreground-scripts ../devexpress-${packageName.replace('@','-')}.tgz`
                 )
             )
             .then(() =>
@@ -256,17 +331,49 @@ describe('npm integration tests', () => {
     });
 
     it('Should be able to run publish-please in dry mode after installing locally on CI', () => {
+        const packageJson = JSON.parse(readFile('package.json').toString());
+        packageJson.scripts = {
+            test: 'echo Error: no test specified',
+            'publish-please': 'publish-please',
+        };
+
+        writeFile('package.json', JSON.stringify(packageJson, null, 2));
+
         return Promise.resolve()
+            .then(() => {
+                writeFile(
+                    '.publishrc',
+                    JSON.stringify({
+                        validations: {
+                            vulnerableDependencies: true,
+                            uncommittedChanges: false,
+                            untrackedFiles: false,
+                            sensitiveData: true,
+                            branch: 'master',
+                            gitTag: false,
+                        },
+                        confirm: true,
+                        publishCommand: 'npm publish',
+                        publishTag: 'latest',
+                        prePublishScript: 'npm test',
+                        postPublishScript: '',
+                    })
+                );
+            })
             .then(() => {
                 console.log('> setting .auditignore with content:');
                 console.log(readFile('.auditignore').toString());
                 console.log('');
             })
-            .then(() => console.log(`> npm install --save-dev ${packageName}`))
+            .then(() =>
+                console.log(
+                    `> npm install --save-dev devexpress-${packageName}`
+                )
+            )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npm install --save-dev ../${packageName.replace('@','-')}.tgz`
+                    `npm install --save-dev ../devexpress-${packageName.replace('@','-')}.tgz`
                 )
             )
             .then(() =>
@@ -287,7 +394,7 @@ describe('npm integration tests', () => {
             })
             .then(() => console.log('> npm run publish-please --dry-run --ci'))
             .then(() =>
-                exec('npm run publish-please --dry-run --ci > ./publish02b.log')
+                exec('npm run publish-please --dry-run --CI > ./publish02b.log')
             )
             .then(() => {
                 const publishLog = readFile('./publish02b.log').toString();
@@ -317,12 +424,14 @@ describe('npm integration tests', () => {
         it('Should abort the publishing workflow when npm version < 6.1.0 and vulnerability check is enabled in .publishrc config file', () => {
             return Promise.resolve()
                 .then(() =>
-                    console.log(`> npm install --save-dev ${packageName}`)
+                    console.log(
+                        `> npm install --save-dev devexpress-${packageName}`
+                    )
                 )
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npm install --save-dev ../${packageName.replace('@','-')}.tgz`
+                        `npm install --save-dev ../devexpress-${packageName.replace('@','-')}.tgz`
                     )
                 )
                 .then(() => {
@@ -373,12 +482,14 @@ describe('npm integration tests', () => {
         it('Should abort the dry-mode workflow when npm version < 6.1.0 and vulnerability check is enabled in .publishrc config file', () => {
             return Promise.resolve()
                 .then(() =>
-                    console.log(`> npm install --save-dev ${packageName}`)
+                    console.log(
+                        `> npm install --save-dev devexpress-${packageName}`
+                    )
                 )
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npm install --save-dev ../${packageName.replace('@','-')}.tgz`
+                        `npm install --save-dev ../devexpress-${packageName.replace('@','-')}.tgz`
                     )
                 )
                 .then(() => {

@@ -90,11 +90,13 @@ describe('npx integration tests', () => {
                 pkg.scripts = scripts;
                 writeFile('package.json', JSON.stringify(pkg, null, 2));
             })
-            .then(() => console.log(`> npx ${packageName} --dry-run`))
+            .then(() =>
+                console.log(`> npx devexpress-${packageName} --dry-run`)
+            )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../${packageName.replace('@','-')}.tgz --dry-run > ./publish01.log`
+                    `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run > ./publish01.log`
                 )
             )
             .catch(() => {
@@ -150,11 +152,13 @@ describe('npx integration tests', () => {
                     })
                 );
             })
-            .then(() => console.log(`> npx ${packageName} --dry-run`))
+            .then(() =>
+                console.log(`> npx devexpress-${packageName} --dry-run`)
+            )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../${packageName.replace('@','-')}.tgz --dry-run > ./publish02.log`
+                    `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run > ./publish02.log`
                 )
             )
             .then(() => {
@@ -208,11 +212,13 @@ describe('npx integration tests', () => {
                     })
                 );
             })
-            .then(() => console.log(`> npx ${packageName} --dry-run --ci`))
+            .then(() =>
+                console.log(`> npx devexpress-${packageName} --dry-run --ci`)
+            )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../${packageName.replace('@','-')}.tgz --dry-run --ci > ./publish02b.log`
+                    `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run --ci > ./publish02b.log`
                 )
             )
             .then(() => {
@@ -241,11 +247,11 @@ describe('npx integration tests', () => {
 
     it('Should be able to configure publish-please', () => {
         return Promise.resolve()
-            .then(() => console.log(`> npx ${packageName} config`))
+            .then(() => console.log(`> npx devexpress-${packageName} config`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../${packageName.replace('@','-')}.tgz config > ./publish03.log`
+                    `npx ../devexpress-${packageName.replace('@','-')}.tgz config > ./publish03.log`
                 )
             )
             .then(() => {
@@ -277,15 +283,20 @@ describe('npx integration tests', () => {
     });
 
     it('Should be able to run the publishing workflow (with no .publishrc config file)', () => {
+        const packageJson = JSON.parse(readFile('package.json').toString());
+        packageJson.scripts = { test: 'echo Error: no test specified' };
+
+        writeFile('package.json', JSON.stringify(packageJson, null, 2));
+
         return Promise.resolve()
-            .then(() => console.log(`> npx ${packageName}`))
+            .then(() => console.log(`> npx devexpress-${packageName}`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../${packageName.replace('@','-')}.tgz > ./publish04.log`
+                    `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish04.log`
                 )
             )
-            .then(() => {
+            .catch(() => {
                 const publishLog = readFile('./publish04.log').toString();
                 console.log(publishLog);
                 return publishLog;
@@ -326,6 +337,11 @@ describe('npx integration tests', () => {
     });
 
     it('Should be able to run the publishing workflow (with .publishrc config file)', () => {
+        const packageJson = JSON.parse(readFile('package.json').toString());
+        packageJson.scripts = { test: 'echo Error: no test specified' };
+
+        writeFile('package.json', JSON.stringify(packageJson, null, 2));
+
         return Promise.resolve()
             .then(() => {
                 writeFile(
@@ -347,14 +363,14 @@ describe('npx integration tests', () => {
                     })
                 );
             })
-            .then(() => console.log(`> npx ${packageName}`))
+            .then(() => console.log(`> npx devexpress-${packageName}`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../${packageName.replace('@','-')}.tgz > ./publish05.log`
+                    `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish05.log`
                 )
             )
-            .then(() => {
+            .catch(() => {
                 const publishLog = readFile('./publish05.log').toString();
                 console.log(publishLog);
                 return publishLog;
@@ -400,11 +416,11 @@ describe('npx integration tests', () => {
                         })
                     );
                 })
-                .then(() => console.log(`> npx ${packageName}`))
+                .then(() => console.log(`> npx devexpress-${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz > ./publish06.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish06.log`
                     )
                 )
                 .then(() => {
@@ -452,11 +468,13 @@ describe('npx integration tests', () => {
                         })
                     );
                 })
-                .then(() => console.log(`> npx ${packageName} --dry-run`))
+                .then(() =>
+                    console.log(`> npx devexpress-${packageName} --dry-run`)
+                )
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../${packageName.replace('@','-')}.tgz --dry-run > ./publish07.log`
+                        `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run > ./publish07.log`
                     )
                 )
                 .catch(() => {

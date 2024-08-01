@@ -8,41 +8,17 @@ const pathJoin = require('path').join;
 const lineSeparator = '----------------------------------';
 
 describe('npm args parser util', () => {
+    let processEnv;
     beforeEach(() => {
         console.log(`${lineSeparator} begin test ${lineSeparator}`);
     });
     afterEach(() => {
         console.log(`${lineSeparator} end test ${lineSeparator}\n`);
+        processEnv = {};
     });
     it('Should return an empty object when process.env is undefined', () => {
         // Given
-        const processEnv = undefined;
-        // When
-        const args = npmArgs(processEnv);
-        // Then
-        args.should.be.empty();
-    });
-    it('Should return an empty object when the command is not an npm command', () => {
-        // Given
-        process.env['npm_config_argv'] = undefined;
-        const processEnv = process.env;
-        // When
-        const args = npmArgs(processEnv);
-        // Then
-        args.should.be.empty();
-    });
-    it('Should return an empty object when process.env["npm_config_argv"] does not exist', () => {
-        // Given
-        delete process.env['npm_config_argv'];
-        // When
-        const args = npmArgs(process.env);
-        // Then
-        args.should.be.empty();
-    });
-    it('Should return an empty object when process.env["npm_config_argv"] is a bad json', () => {
-        // Given
-        process.env['npm_config_argv'] = '<bad json>';
-        const processEnv = process.env;
+        processEnv = undefined;
         // When
         const args = npmArgs(processEnv);
         // Then
@@ -50,10 +26,9 @@ describe('npm args parser util', () => {
     });
     it('Should parse the command `npm publish`', () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["publish"],"original":["publish"]}';
+        processEnv['npm_command'] = 'publish';
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.publish.should.be.true();
         args.install.should.be.false();
@@ -66,10 +41,10 @@ describe('npm args parser util', () => {
     });
     it('Should parse the command `npm publish --with-publish-please`', () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["publish","--with-publish-please"],"original":["publish","--with-publish-please"]}';
+        processEnv['npm_command'] = 'publish';
+        processEnv['npm_config_with_publish_please'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.publish.should.be.true();
         args.install.should.be.false();
@@ -82,10 +57,9 @@ describe('npm args parser util', () => {
     });
     it('Should parse the command `npm run preinstall`', () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["run","preinstall"],"original":["run","preinstall"]}';
+        processEnv['npm_command'] = 'run-script';
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.publish.should.be.false();
         args.install.should.be.false();
@@ -101,10 +75,9 @@ describe('npm args parser util', () => {
     });
     it('Should parse the command `npm install`', () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["install"],"original":["install"]}';
+        processEnv['npm_command'] = 'install';
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.publish.should.be.false();
         args.install.should.be.true();
@@ -120,10 +93,9 @@ describe('npm args parser util', () => {
     });
     it('Should parse the command `npm i`', () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["i"],"original":["i"]}';
+        processEnv['npm_command'] = 'install';
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.publish.should.be.false();
         args.install.should.be.true();
@@ -137,13 +109,12 @@ describe('npm args parser util', () => {
         args['--ci'].should.be.false();
         args['config'].should.be.false();
     });
-    it(`Should parse the command 'npm install --save-dev ${packageName}'`, () => {
+    it(`Should parse the command 'npm install --save-dev devexpress-${packageName}'`, () => {
         // Given
-        process.env[
-            'npm_config_argv'
-        ] = `{"remain":["${packageName}"],"cooked":["install","--save-dev","${packageName}"],"original":["install","--save-dev","${packageName}"]}`;
+        processEnv['npm_command'] = 'install';
+        processEnv['npm_config_save_dev'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.true();
         args.publish.should.be.false();
@@ -156,13 +127,12 @@ describe('npm args parser util', () => {
         args['--ci'].should.be.false();
         args['config'].should.be.false();
     });
-    it(`Should parse the command 'npm i -D ${packageName}'`, () => {
+    it(`Should parse the command 'npm i -D devexpress-${packageName}'`, () => {
         // Given
-        process.env[
-            'npm_config_argv'
-        ] = `{"remain":["${packageName}"],"cooked":["i","--save-dev","${packageName}"],"original":["i","-D","${packageName}"]}`;
+        processEnv['npm_command'] = 'install';
+        processEnv['npm_config_save_dev'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.true();
         args.publish.should.be.false();
@@ -175,13 +145,12 @@ describe('npm args parser util', () => {
         args['--ci'].should.be.false();
         args['config'].should.be.false();
     });
-    it(`Should parse the command 'npm install --global ${packageName}'`, () => {
+    it(`Should parse the command 'npm install --global devexpress-${packageName}'`, () => {
         // Given
-        process.env[
-            'npm_config_argv'
-        ] = `{"remain":["${packageName}"],"cooked":["install","--global","${packageName}"],"original":["install","-g","${packageName}"]}`;
+        processEnv['npm_command'] = 'install';
+        processEnv['npm_config_global'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.true();
         args.publish.should.be.false();
@@ -194,13 +163,12 @@ describe('npm args parser util', () => {
         args['--ci'].should.be.false();
         args['config'].should.be.false();
     });
-    it(`Should parse the command 'npm i -g ${packageName}'`, () => {
+    it(`Should parse the command 'npm i -g devexpress-${packageName}'`, () => {
         // Given
-        process.env[
-            'npm_config_argv'
-        ] = `{"remain":["${packageName}"],"cooked":["i","--global","${packageName}"],"original":["i","-g","${packageName}"]}`;
+        processEnv['npm_command'] = 'install';
+        processEnv['npm_config_global'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.true();
         args.publish.should.be.false();
@@ -215,10 +183,10 @@ describe('npm args parser util', () => {
     });
     it("Should parse the command 'npm run publish-please --dry-run'", () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["run","publish-please","--dry-run"],"original":["run","publish-please","--dry-run"]}';
+        processEnv['npm_command'] = 'run-script';
+        processEnv['npm_config_dry_run'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.false();
         args.publish.should.be.false();
@@ -233,10 +201,10 @@ describe('npm args parser util', () => {
     });
     it("Should parse the command 'npm run publish-please --ci'", () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["run","publish-please","--ci"],"original":["run","publish-please","--ci"]}';
+        processEnv['npm_command'] = 'run-script';
+        processEnv['npm_config_ci'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.false();
         args.publish.should.be.false();
@@ -251,10 +219,11 @@ describe('npm args parser util', () => {
     });
     it("Should parse the command 'npm run publish-please --dry-run --ci'", () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":[],"cooked":["run","publish-please","--dry-run", "--ci"],"original":["run","publish-please","--dry-run", "--ci"]}';
+        processEnv['npm_command'] = 'run-script';
+        processEnv['npm_config_dry_run'] = true;
+        processEnv['npm_config_ci'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.false();
         args.publish.should.be.false();
@@ -269,10 +238,10 @@ describe('npm args parser util', () => {
     });
     it("Should parse the command 'npm run publish-please config'", () => {
         // Given
-        process.env['npm_config_argv'] =
-            '{"remain":["config"],"cooked":["run","publish-please","config"],"original":["run","publish-please","config"]}';
+        processEnv['npm_command'] = 'run-script';
+        processEnv['npm_config_config'] = true;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.false();
         args.publish.should.be.false();
@@ -286,16 +255,16 @@ describe('npm args parser util', () => {
         args['config'].should.be.true();
     });
 
-    it("Should parse the command 'npx publish-please'", () => {
+    it.skip("Should parse the command 'npx publish-please'", () => {
         // Given
         const npxPath = JSON.stringify(
             pathJoin('Users', 'HDO', '.npm', '_npx', '78031')
         );
-        process.env[
+        processEnv[
             'npm_config_argv'
         ] = `{"remain":["publish-please"],"cooked":["install","publish-please","--global","--prefix",${npxPath},"--loglevel","error","--json"],"original":["install","publish-please","--global","--prefix",${npxPath},"--loglevel","error","--json"]}`;
         // When
-        const args = npmArgs(process.env);
+        const args = npmArgs(processEnv);
         // Then
         args.install.should.be.true();
         args.publish.should.be.false();

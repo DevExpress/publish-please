@@ -7,7 +7,7 @@ function isInTestMode() {
         if (
             process &&
             process.env &&
-            process.env.PUBLISH_PLEASE_TEST_MODE === 'true'
+            Boolean(process.env.PUBLISH_PLEASE_TEST_MODE) === true
         ) {
             return true;
         }
