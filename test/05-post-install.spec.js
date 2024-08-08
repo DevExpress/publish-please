@@ -20,7 +20,7 @@ describe.skip('Post-Install Execution', () => {
     let exitCode;
     let output;
 
-    before(() => (process.env.PUBLISH_PLEASE_TEST_MODE = true));
+    before(() => (process.env.PUBLISH_PLEASE_TEST_MODE = 'true'));
     after(() => delete process.env.PUBLISH_PLEASE_TEST_MODE);
 
     beforeEach(() => {

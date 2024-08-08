@@ -56,7 +56,7 @@ describe('Guard Execution', () => {
     it('Should return an error message (CI reporter) on `npm publish --ci`', () => {
         // Given
         process.env['npm_command'] = 'publish';
-        process.env['npm_config_ci'] = true;
+        process.env['npm_config_ci'] = 'true';
         // When
         guard(process.env);
         // Then
@@ -72,7 +72,7 @@ describe('Guard Execution', () => {
     it('Should not return an error message on `npm publish --with-publish-please`', () => {
         // Given
         process.env['npm_command'] = 'publish';
-        process.env['npm_config_with_publish_please'] = true;
+        process.env['npm_config_with_publish_please'] = 'true';
         // When
         guard(process.env);
         // Then

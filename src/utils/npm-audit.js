@@ -176,18 +176,7 @@ function removeIgnoredVulnerabilities(response, options) {
 
         /* prettier-ignore */
         const vulnerabilities = filteredResponse.vulnerabilities
-            ? Object.keys(filteredResponse.vulnerabilities)
-                .map((vulnerability) => {
-                    filteredResponse.vulnerabilities[vulnerability].via = filteredResponse.vulnerabilities[vulnerability].via.filter(
-                        ({ url }) =>
-                            !ignoredVulnerabilities
-                                .some(ignoredVulnerability => {
-                                    return url ? url.indexOf(ignoredVulnerability) > 0 : false;
-                                })
-                    );
-                    return filteredResponse.vulnerabilities[vulnerability];
-                })
-                .filter(vulnerability => vulnerability.via.length === 0)
+            ? filterIgnoredVulnerabilities(filteredResponse.vulnerabilities, ignoredVulnerabilities)
             : {};
 
         vulnerabilities.forEach((vulnerability) => {
@@ -203,6 +192,21 @@ function removeIgnoredVulnerabilities(response, options) {
         }
         return response;
     }
+}
+
+function filterIgnoredVulnerabilities(vulnerabilities, ignoredVulnerabilities) {
+    return Object.keys(vulnerabilities)
+        .map((vulnerability) => {
+            vulnerabilities[vulnerability].via = vulnerabilities[vulnerability].via.filter(
+                ({ url }) =>
+                    !ignoredVulnerabilities
+                        .some(ignoredVulnerability => {
+                            return url ? url.indexOf(ignoredVulnerability) > 0 : false;
+                        })
+            );
+            return vulnerabilities[vulnerability];
+        })
+        .filter(vulnerability => vulnerability.via.length === 0);
 }
 
 /**
@@ -437,16 +441,7 @@ function removeIgnoredLevels(response, options) {
         const filteredResponse = JSON.parse(JSON.stringify(response, null, 2));
         /* prettier-ignore */
         const vulnerabilities = filteredResponse.vulnerabilities
-            ? Object.keys(filteredResponse.vulnerabilities).filter(
-                (vulnerability) => {
-                    return (
-                        filteredLevels.indexOf(
-                            filteredResponse.vulnerabilities[vulnerability]
-                                .severity
-                        ) < 0
-                    );
-                }
-            )
+            ? filterIgnoredLevels(filteredResponse.vulnerabilities, filteredLevels)
             : [];
 
         vulnerabilities.forEach((vulnerability) => {
@@ -462,6 +457,14 @@ function removeIgnoredLevels(response, options) {
         }
         return response;
     }
+}
+
+function filterIgnoredLevels(vulnerabilities, filteredLevels) {
+    return Object.keys(vulnerabilities).filter(
+        (vulnerability) => {
+            return filteredLevels.indexOf(vulnerabilities[vulnerability].severity) < 0;
+        }
+    );
 }
 
 /**

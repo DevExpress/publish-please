@@ -39,18 +39,12 @@ module.exports = {
 
                             Object.keys(result.vulnerabilities).forEach(
                                 (vulnerability) => {
-                                    result.vulnerabilities[
-                                        vulnerability
-                                    ].nodes.forEach((path) => {
-                                        errs.add(
-                                            summaryOf(
-                                                path.replace(
-                                                    /^node_modules\//g,
-                                                    ''
-                                                )
-                                            )
-                                        );
-                                    });
+                                    result.vulnerabilities[vulnerability].nodes
+                                        .forEach((path) => {
+                                            const formattedPath = summaryOf(path.replace(/^node_modules\//g, ''));
+
+                                            errs.add(formattedPath);
+                                        });
                                 }
                             );
                             const distinctAndSortedErrors = Array.from(
@@ -77,11 +71,9 @@ module.exports = {
 };
 
 function vulnerabilitiesFoundIn(result) {
-    return (
-        result &&
+    return result &&
         result.vulnerabilities &&
-        Object.keys(result.vulnerabilities).length > 0
-    );
+        Object.keys(result.vulnerabilities).length > 0;
 }
 
 function auditErrorFoundIn(result) {

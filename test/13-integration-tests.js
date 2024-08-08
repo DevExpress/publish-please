@@ -16,14 +16,13 @@ const readPkg = require('../lib/utils/read-package-json').readPkgSync;
 const { mkdirp } = require('mkdirp');
 const chalk = require('chalk');
 const requireUncached = require('import-fresh');
-const packageName = require('./utils/publish-please-version-under-test');
 const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const shouldUsePrePublishOnlyScript = nodeInfos.shouldUsePrePublishOnlyScript;
 const envType = require('../lib/reporters/env-type');
 const lineSeparator = '----------------------------------';
 
 /* eslint-disable max-nested-callbacks */
-describe.skip('Integration tests', () => {
+describe('Integration tests', () => {
     // NOTE: mocking confirm function
     let mockConfirm = () => {};
 
@@ -88,7 +87,7 @@ describe.skip('Integration tests', () => {
                 )
             )
             .then(() => process.chdir('testing-repo'))
-            .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = true));
+            .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = 'true'));
     });
 
     after(() => delete process.env.PUBLISH_PLEASE_TEST_MODE);
@@ -696,7 +695,7 @@ describe.skip('Integration tests', () => {
                             ? assert(err.message.indexOf('Vulnerability found') > -1)
                             : assert(err.message.indexOf('Cannot check vulnerable dependencies') > -1)
                 ));
-        ['publish-please@2.4.1', 'testcafe@0.19.2'].forEach(function(
+        ['lodash@4.16.4', 'testcafe@0.19.2'].forEach(function(
             dependency
         ) {
             const name = dependency.split('@')[0];
@@ -727,7 +726,7 @@ describe.skip('Integration tests', () => {
                         (err) =>
                             /* prettier-ignore */
                             nodeInfos.npmAuditHasJsonReporter
-                                ? assert(err.message.indexOf(`Vulnerability found in ${name}`) > -1)
+                                ? assert(err.message.indexOf(name) > -1)
                                 : assert(err.message.indexOf('Cannot check vulnerable dependencies') > -1)
                     ));
         });

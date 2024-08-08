@@ -14,7 +14,7 @@ module.exports.npmCommand = function(args) {
             return args['npm_command'] === command;
         },
         hasArg: (arg) => {
-            return Boolean(args[`npm_config_${arg}`]);
+            return args[`npm_config_${arg}`] === 'true';
         },
     };
 };

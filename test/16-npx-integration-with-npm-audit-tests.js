@@ -11,6 +11,7 @@ const packageName = require('./utils/publish-please-version-under-test');
 const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const EOL = require('os').EOL;
 const lineSeparator = '----------------------------------';
+const packagePath = `../${packageName.replace('@','-')}.tgz`;
 
 /* eslint-disable max-nested-callbacks */
 describe('npx integration tests with npm audit', () => {
@@ -47,7 +48,7 @@ describe('npx integration tests with npm audit', () => {
                 )
                 .then(() => process.chdir('testing-repo'))
                 .then(() => console.log(`tests will run in ${process.cwd()}`))
-                .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = true));
+                .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = 'true'));
         }
 
         return del('testing-repo')
@@ -59,7 +60,7 @@ describe('npx integration tests with npm audit', () => {
             )
             .then(() => process.chdir('testing-repo'))
             .then(() => console.log(`tests will run in ${process.cwd()}`))
-            .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = true));
+            .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = 'true'));
     });
 
     after(() => delete process.env.PUBLISH_PLEASE_TEST_MODE);
@@ -112,11 +113,11 @@ describe('npx integration tests with npm audit', () => {
                     };
                     writeFile('package.json', JSON.stringify(pkg, null, 2));
                 })
-                .then(() => console.log(`> npx devexpress-${packageName}`))
+                .then(() => console.log(`> npx ${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish08.log`
+                        `npx ${packagePath} > ./publish08.log`
                     )
                 )
                 .catch(() => {
@@ -198,11 +199,11 @@ describe('npx integration tests with npm audit', () => {
                     ];
                     writeFile('.auditignore', auditIgnore.join(EOL));
                 })
-                .then(() => console.log(`> npx devexpress-${packageName}`))
+                .then(() => console.log(`> npx ${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish09.log`
+                        `npx ${packagePath} > ./publish09.log`
                     )
                 )
                 .catch(() => {
@@ -272,11 +273,11 @@ describe('npx integration tests with npm audit', () => {
                         `;
                     writeFile('audit.opts', auditOptions);
                 })
-                .then(() => console.log(`> npx devexpress-${packageName}`))
+                .then(() => console.log(`> npx ${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish10.log`
+                        `npx ${packagePath} > ./publish10.log`
                     )
                 )
                 .catch(() => {
@@ -342,11 +343,11 @@ describe('npx integration tests with npm audit', () => {
                         `;
                     writeFile('audit.opts', auditOptions);
                 })
-                .then(() => console.log(`> npx devexpress-${packageName}`))
+                .then(() => console.log(`> npx ${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish10.log`
+                        `npx ${packagePath} > ./publish10.log`
                     )
                 )
                 .catch(() => {

@@ -151,7 +151,7 @@ describe('CI reporter', () => {
     it("Should run when publish-please is started with command 'npm run publish-please --ci'", () => {
         // Given
         process.env['npm_command'] = 'run-script';
-        process.env['npm_config_ci'] = true;
+        process.env['npm_config_ci'] = 'true';
         // When
         const result = reporter.shouldRun();
         // Then

@@ -260,7 +260,7 @@ if (nodeInfos.npmAuditHasJsonReporter) {
                                             range: '<2.0.0',
                                         },
                                         {
-                                            source: 1094570,
+                                            source: 1098340,
                                             name: 'ms',
                                             dependency: 'ms',
                                             title:
@@ -268,7 +268,7 @@ if (nodeInfos.npmAuditHasJsonReporter) {
                                             url:
                                                 'https://github.com/advisories/GHSA-3fx5-fwvr-xrjg',
                                             severity: 'high',
-                                            cwe: ['CWE-400'],
+                                            cwe: ['CWE-400', 'CWE-1333'],
                                             cvss: {
                                                 score: 7.5,
                                                 vectorString:
@@ -282,8 +282,8 @@ if (nodeInfos.npmAuditHasJsonReporter) {
                                     nodes: ['node_modules/ms'],
                                     fixAvailable: {
                                         name: 'ms',
-                                        version: '0.7.3',
-                                        isSemVerMajor: false,
+                                        version: '2.1.3',
+                                        isSemVerMajor: true,
                                     },
                                 },
                             },
@@ -766,8 +766,8 @@ if (nodeInfos.npmAuditHasJsonReporter) {
                                     nodes: ['node_modules/ms'],
                                     fixAvailable: {
                                         name: 'ms',
-                                        version: '0.7.3',
-                                        isSemVerMajor: false,
+                                        version: '2.1.3',
+                                        isSemVerMajor: true,
                                     },
                                 },
                             },
@@ -856,8 +856,8 @@ if (nodeInfos.npmAuditHasJsonReporter) {
                                     nodes: ['node_modules/ms'],
                                     fixAvailable: {
                                         name: 'ms',
-                                        version: '0.7.3',
-                                        isSemVerMajor: false,
+                                        version: '2.1.3',
+                                        isSemVerMajor: true,
                                     },
                                 },
                             },

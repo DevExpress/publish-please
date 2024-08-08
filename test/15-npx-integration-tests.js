@@ -10,6 +10,7 @@ const exec = require('cp-sugar').exec;
 const packageName = require('./utils/publish-please-version-under-test');
 const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const lineSeparator = '----------------------------------';
+const packagePath = `../${packageName.replace('@','-')}.tgz`;
 
 /* eslint-disable max-nested-callbacks */
 describe('npx integration tests', () => {
@@ -46,7 +47,7 @@ describe('npx integration tests', () => {
                 )
                 .then(() => process.chdir('testing-repo'))
                 .then(() => console.log(`tests will run in ${process.cwd()}`))
-                .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = true));
+                .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = 'true'));
         }
 
         return del('testing-repo')
@@ -58,7 +59,7 @@ describe('npx integration tests', () => {
             )
             .then(() => process.chdir('testing-repo'))
             .then(() => console.log(`tests will run in ${process.cwd()}`))
-            .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = true));
+            .then(() => (process.env.PUBLISH_PLEASE_TEST_MODE = 'true'));
     });
 
     after(() => delete process.env.PUBLISH_PLEASE_TEST_MODE);
@@ -91,12 +92,12 @@ describe('npx integration tests', () => {
                 writeFile('package.json', JSON.stringify(pkg, null, 2));
             })
             .then(() =>
-                console.log(`> npx devexpress-${packageName} --dry-run`)
+                console.log(`> npx ${packageName} --dry-run`)
             )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run > ./publish01.log`
+                    `npx ${packagePath} --dry-run > ./publish01.log`
                 )
             )
             .catch(() => {
@@ -153,12 +154,12 @@ describe('npx integration tests', () => {
                 );
             })
             .then(() =>
-                console.log(`> npx devexpress-${packageName} --dry-run`)
+                console.log(`> npx ${packageName} --dry-run`)
             )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run > ./publish02.log`
+                    `npx ${packagePath} --dry-run > ./publish02.log`
                 )
             )
             .then(() => {
@@ -213,12 +214,12 @@ describe('npx integration tests', () => {
                 );
             })
             .then(() =>
-                console.log(`> npx devexpress-${packageName} --dry-run --ci`)
+                console.log(`> npx ${packageName} --dry-run --ci`)
             )
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run --ci > ./publish02b.log`
+                    `npx ${packagePath} --dry-run --ci > ./publish02b.log`
                 )
             )
             .then(() => {
@@ -247,11 +248,11 @@ describe('npx integration tests', () => {
 
     it('Should be able to configure publish-please', () => {
         return Promise.resolve()
-            .then(() => console.log(`> npx devexpress-${packageName} config`))
+            .then(() => console.log(`> npx ${packageName} config`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../devexpress-${packageName.replace('@','-')}.tgz config > ./publish03.log`
+                    `npx ${packagePath} config > ./publish03.log`
                 )
             )
             .then(() => {
@@ -289,11 +290,11 @@ describe('npx integration tests', () => {
         writeFile('package.json', JSON.stringify(packageJson, null, 2));
 
         return Promise.resolve()
-            .then(() => console.log(`> npx devexpress-${packageName}`))
+            .then(() => console.log(`> npx ${packageName}`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish04.log`
+                    `npx ${packagePath} > ./publish04.log`
                 )
             )
             .catch(() => {
@@ -363,11 +364,11 @@ describe('npx integration tests', () => {
                     })
                 );
             })
-            .then(() => console.log(`> npx devexpress-${packageName}`))
+            .then(() => console.log(`> npx ${packageName}`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
-                    `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish05.log`
+                    `npx ${packagePath} > ./publish05.log`
                 )
             )
             .catch(() => {
@@ -416,11 +417,11 @@ describe('npx integration tests', () => {
                         })
                     );
                 })
-                .then(() => console.log(`> npx devexpress-${packageName}`))
+                .then(() => console.log(`> npx ${packageName}`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../devexpress-${packageName.replace('@','-')}.tgz > ./publish06.log`
+                        `npx ${packagePath} > ./publish06.log`
                     )
                 )
                 .then(() => {
@@ -469,12 +470,12 @@ describe('npx integration tests', () => {
                     );
                 })
                 .then(() =>
-                    console.log(`> npx devexpress-${packageName} --dry-run`)
+                    console.log(`> npx ${packageName} --dry-run`)
                 )
                 .then(() =>
                     exec(
                         /* prettier-ignore */
-                        `npx ../devexpress-${packageName.replace('@','-')}.tgz --dry-run > ./publish07.log`
+                        `npx ${packagePath} --dry-run > ./publish07.log`
                     )
                 )
                 .catch(() => {

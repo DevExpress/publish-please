@@ -40,10 +40,10 @@ describe('Prevent Global Install', () => {
         console.log(`${lineSeparator} end test ${lineSeparator}\n`);
         process.env = Object.assign({}, originalEnv);
     });
-    it(`Should not throw an error when chalk module is not found on 'npm install -g devexpress-${packageName}'`, () => {
+    it(`Should not throw an error when chalk module is not found on 'npm install -g ${packageName}'`, () => {
         // Given
         process.env['npm_command'] = 'install';
-        process.env['npm_config_global'] = true;
+        process.env['npm_config_global'] = 'true';
         // When
         preventGlobalInstall();
         // Then
@@ -51,10 +51,10 @@ describe('Prevent Global Install', () => {
         output.should.containEql("publish-please can't be installed globally");
     });
 
-    it(`Should not throw an error when chalk module is not found on 'npm install --save-dev devexpress-${packageName}'`, () => {
+    it(`Should not throw an error when chalk module is not found on 'npm install --save-dev ${packageName}'`, () => {
         // Given
         process.env['npm_command'] = 'install';
-        process.env['npm_config_save_dev'] = true;
+        process.env['npm_config_save_dev'] = 'true';
         delete process.env['npm_config_global'];
 
         // When
