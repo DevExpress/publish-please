@@ -195,15 +195,18 @@ function removeIgnoredVulnerabilities(response, options) {
 }
 
 function filterIgnoredVulnerabilities(vulnerabilities, ignoredVulnerabilities) {
+    const isIgnoredVulnerability = ({ url }) => {
+        return !ignoredVulnerabilities
+            .some(ignoredVulnerability => {
+                return url ? url.indexOf(ignoredVulnerability) > 0 : false;
+            });
+    }
+
     return Object.keys(vulnerabilities)
         .map((vulnerability) => {
-            vulnerabilities[vulnerability].via = vulnerabilities[vulnerability].via.filter(
-                ({ url }) =>
-                    !ignoredVulnerabilities
-                        .some(ignoredVulnerability => {
-                            return url ? url.indexOf(ignoredVulnerability) > 0 : false;
-                        })
-            );
+            vulnerabilities[vulnerability].via = vulnerabilities[vulnerability].via
+                .filter(isIgnoredVulnerability);
+
             return vulnerabilities[vulnerability];
         })
         .filter(vulnerability => vulnerability.via.length === 0);
