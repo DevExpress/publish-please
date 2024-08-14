@@ -1182,7 +1182,9 @@ describe('Integration tests', () => {
                         err.message.indexOf('operation not permitted') > -1 ||
                         err.message.indexOf('You must be logged in to publish packages') > -1 ||
                         //https://github.com/npm/cli/issues/1637
-                        err.message.indexOf('npm ERR! 404 Not Found - PUT https://registry.npmjs.org/testing-repo - Not found') > -1
+                        err.message.indexOf('npm ERR! 404 Not Found - PUT https://registry.npmjs.org/testing-repo - Not found') > -1 ||
+                        err.message.indexOf('You may not perform that action with these credentials') > -1 ||
+                        err.message.indexOf('This command requires you to be logged in to https://registry.npmjs.org/') > -1
                     );
                 }));
 
