@@ -8,5 +8,6 @@
     "gitTag": true
   },
   "confirm": false,
-  "publishTag": "latest"
+  "publishTag": "latest",
+  "publishCommand": "npm publish --access=public"
 }
