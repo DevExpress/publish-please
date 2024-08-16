@@ -695,9 +695,7 @@ describe('Integration tests', () => {
                             ? assert(err.message.indexOf('Vulnerability found') > -1)
                             : assert(err.message.indexOf('Cannot check vulnerable dependencies') > -1)
                 ));
-        ['lodash@4.16.4', 'testcafe@0.19.2'].forEach(function(
-            dependency
-        ) {
+        ['lodash@4.16.4', 'testcafe@0.19.2'].forEach(function(dependency) {
             const name = dependency.split('@')[0];
             const version = dependency.split('@')[1];
             it(`Should fail on transitive dependency inside ${dependency}`, () =>
@@ -1182,7 +1180,7 @@ describe('Integration tests', () => {
                         err.message.indexOf('operation not permitted') > -1 ||
                         err.message.indexOf('You must be logged in to publish packages') > -1 ||
                         //https://github.com/npm/cli/issues/1637
-                        err.message.indexOf('npm ERR! 404 Not Found - PUT https://registry.npmjs.org/testing-repo - Not found') > -1 ||
+                        err.message.indexOf('404 Not Found - PUT https://registry.npmjs.org/testing-repo - Not found') > -1 ||
                         err.message.indexOf('You may not perform that action with these credentials') > -1 ||
                         err.message.indexOf('This command requires you to be logged in to https://registry.npmjs.org/') > -1
                     );

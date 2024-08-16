@@ -11,7 +11,7 @@ const packageName = require('./utils/publish-please-version-under-test');
 const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const EOL = require('os').EOL;
 const lineSeparator = '----------------------------------';
-const packagePath = `../${packageName.replace('@','-')}.tgz`;
+const packagePath = `../${packageName.replace('@', '-')}.tgz`;
 
 /* eslint-disable max-nested-callbacks */
 describe('npx integration tests with npm audit', () => {
