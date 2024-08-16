@@ -196,20 +196,20 @@ function removeIgnoredVulnerabilities(response, options) {
 
 function filterIgnoredVulnerabilities(vulnerabilities, ignoredVulnerabilities) {
     const isIgnoredVulnerability = ({ url }) => {
-        return !ignoredVulnerabilities
-            .some(ignoredVulnerability => {
-                return url ? url.indexOf(ignoredVulnerability) > 0 : false;
-            });
-    }
+        return !ignoredVulnerabilities.some((ignoredVulnerability) => {
+            return url ? url.indexOf(ignoredVulnerability) > 0 : false;
+        });
+    };
 
     return Object.keys(vulnerabilities)
         .map((vulnerability) => {
-            vulnerabilities[vulnerability].via = vulnerabilities[vulnerability].via
-                .filter(isIgnoredVulnerability);
+            vulnerabilities[vulnerability].via = vulnerabilities[
+                vulnerability
+            ].via.filter(isIgnoredVulnerability);
 
             return vulnerabilities[vulnerability];
         })
-        .filter(vulnerability => vulnerability.via.length === 0);
+        .filter((vulnerability) => vulnerability.via.length === 0);
 }
 
 /**
@@ -463,11 +463,11 @@ function removeIgnoredLevels(response, options) {
 }
 
 function filterIgnoredLevels(vulnerabilities, filteredLevels) {
-    return Object.keys(vulnerabilities).filter(
-        (vulnerability) => {
-            return filteredLevels.indexOf(vulnerabilities[vulnerability].severity) < 0;
-        }
-    );
+    return Object.keys(vulnerabilities).filter((vulnerability) => {
+        return (
+            filteredLevels.indexOf(vulnerabilities[vulnerability].severity) < 0
+        );
+    });
 }
 
 /**

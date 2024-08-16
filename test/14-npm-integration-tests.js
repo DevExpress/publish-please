@@ -12,7 +12,7 @@ const packageName = require('./utils/publish-please-version-under-test');
 const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const shouldUsePrePublishOnlyScript = nodeInfos.shouldUsePrePublishOnlyScript;
 const lineSeparator = '----------------------------------';
-const packagePath = `../${packageName.replace('@','-')}.tgz`;
+const packagePath = `../${packageName.replace('@', '-')}.tgz`;
 
 const writePublishFile = () => {
     writeFile(
@@ -112,13 +112,9 @@ describe('npm integration tests', () => {
 
     it('Should not install globally', () => {
         return Promise.resolve()
+            .then(() => console.log(`> npm install -g ${packageName}`))
             .then(() =>
-                console.log(`> npm install -g ${packageName}`)
-            )
-            .then(() =>
-                exec(
-                    `npm install -g --foreground-scripts ${packagePath}`
-                )
+                exec(`npm install -g --foreground-scripts ${packagePath}`)
             )
             .then(() => {
                 throw new Error('Promise rejection expected');
@@ -130,11 +126,10 @@ describe('npm integration tests', () => {
 
     it.skip('Should install locally', () => {
         return Promise.resolve()
+            .then(() => console.log(`> npm install --save-dev ${packageName}`))
             .then(() =>
-                console.log(`> npm install --save-dev ${packageName}`)
-            )
-            .then(() =>
-                exec(`npm install --foreground-scripts --save-dev ${packagePath}`
+                exec(
+                    `npm install --foreground-scripts --save-dev ${packagePath}`
                 )
             )
             .then(() => {
@@ -248,11 +243,7 @@ describe('npm integration tests', () => {
                 console.log(readFile('.auditignore').toString());
                 console.log('');
             })
-            .then(() =>
-                console.log(
-                    `> npm install --save-dev ${packageName}`
-                )
-            )
+            .then(() => console.log(`> npm install --save-dev ${packageName}`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
@@ -317,11 +308,7 @@ describe('npm integration tests', () => {
                 console.log(readFile('.auditignore').toString());
                 console.log('');
             })
-            .then(() =>
-                console.log(
-                    `> npm install --save-dev ${packageName}`
-                )
-            )
+            .then(() => console.log(`> npm install --save-dev ${packageName}`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
@@ -376,9 +363,7 @@ describe('npm integration tests', () => {
         it('Should abort the publishing workflow when npm version < 6.1.0 and vulnerability check is enabled in .publishrc config file', () => {
             return Promise.resolve()
                 .then(() =>
-                    console.log(
-                        `> npm install --save-dev ${packageName}`
-                    )
+                    console.log(`> npm install --save-dev ${packageName}`)
                 )
                 .then(() =>
                     exec(
@@ -433,7 +418,9 @@ describe('npm integration tests', () => {
 
         it('Should abort the dry-mode workflow when npm version < 6.1.0 and vulnerability check is enabled in .publishrc config file', () => {
             return Promise.resolve()
-                .then(() => console.log(`> npm install --save-dev ${packageName}`))
+                .then(() =>
+                    console.log(`> npm install --save-dev ${packageName}`)
+                )
                 .then(() =>
                     exec(
                         /* prettier-ignore */

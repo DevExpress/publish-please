@@ -10,7 +10,7 @@ const exec = require('cp-sugar').exec;
 const packageName = require('./utils/publish-please-version-under-test');
 const nodeInfos = require('../lib/utils/get-node-infos').getNodeInfosSync();
 const lineSeparator = '----------------------------------';
-const packagePath = `../${packageName.replace('@','-')}.tgz`;
+const packagePath = `../${packageName.replace('@', '-')}.tgz`;
 
 /* eslint-disable max-nested-callbacks */
 describe('npx integration tests', () => {
@@ -91,9 +91,7 @@ describe('npx integration tests', () => {
                 pkg.scripts = scripts;
                 writeFile('package.json', JSON.stringify(pkg, null, 2));
             })
-            .then(() =>
-                console.log(`> npx ${packageName} --dry-run`)
-            )
+            .then(() => console.log(`> npx ${packageName} --dry-run`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
@@ -153,9 +151,7 @@ describe('npx integration tests', () => {
                     })
                 );
             })
-            .then(() =>
-                console.log(`> npx ${packageName} --dry-run`)
-            )
+            .then(() => console.log(`> npx ${packageName} --dry-run`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
@@ -213,9 +209,7 @@ describe('npx integration tests', () => {
                     })
                 );
             })
-            .then(() =>
-                console.log(`> npx ${packageName} --dry-run --ci`)
-            )
+            .then(() => console.log(`> npx ${packageName} --dry-run --ci`))
             .then(() =>
                 exec(
                     /* prettier-ignore */
@@ -469,9 +463,7 @@ describe('npx integration tests', () => {
                         })
                     );
                 })
-                .then(() =>
-                    console.log(`> npx ${packageName} --dry-run`)
-                )
+                .then(() => console.log(`> npx ${packageName} --dry-run`))
                 .then(() =>
                     exec(
                         /* prettier-ignore */

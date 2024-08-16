@@ -14,7 +14,7 @@ const EOL = require('os').EOL;
 const pathJoin = require('path').join;
 const touch = require('./utils/touch-file-sync');
 const lineSeparator = '----------------------------------';
-const packagePath = `../${packageName.replace('@','-')}.tgz`;
+const packagePath = `../${packageName.replace('@', '-')}.tgz`;
 
 /* eslint-disable max-nested-callbacks */
 describe('npx integration tests with sensitive-data validation', () => {
