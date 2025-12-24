@@ -124,7 +124,6 @@ function onInstall(projectDir) {
         }
     })();
 }
-
 module.exports = function init(projectDir) {
     projectDir = projectDir || getProjectDir();
     return onInstall(projectDir);
