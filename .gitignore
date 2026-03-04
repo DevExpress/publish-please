@@ -9,4 +9,3 @@ lib/**/*.js
 package
 *.tgz
 test/tmp
-package-lock.json
