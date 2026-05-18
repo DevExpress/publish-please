@@ -1,3 +1,8 @@
+# DEPRECATED
+
+The TestCafe team has officially ended maintenance for the **publish-please** repository.
+We are happy to hand this project over to anyone interested in taking it forward. If you would like to take over ownership and maintenance, please open a GitHub issue to contact the team.
+
 # Publish, please!
 Safe and highly functional replacement for `npm publish`.
 
